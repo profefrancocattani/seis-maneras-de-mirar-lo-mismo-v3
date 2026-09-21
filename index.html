@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seis maneras de mirar lo mismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cera:#F7EEDA; --cera-2:#EFE1C2; --carbon:#141414; --carbon-2:#4A463D;
+  --miel:#F2B01E; --linea:#D8C9A8;
+  --bg:var(--cera); --tinta:var(--carbon); --tinta-2:var(--carbon-2);
+  --sup:var(--cera-2); --borde:var(--linea); --acento:#8A6206;
+  --esc:1;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141414; --tinta:#F7EEDA; --tinta-2:#B3A891; --sup:#1F1C17; --borde:#3A352C; --acento:var(--miel);
+  }
+}
+:root[data-theme="dark"]{--bg:#141414;--tinta:#F7EEDA;--tinta-2:#B3A891;--sup:#1F1C17;--borde:#3A352C;--acento:var(--miel)}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(58px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--tinta);
+  font-family:Barlow,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:calc(17px * var(--esc));line-height:1.68;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--miel);outline-offset:3px}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+.wrap{max-width:38rem;margin:0 auto;padding:0 20px}
+.tapa{padding:48px 0 12px}
+.tapa h1{font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;
+  font-size:clamp(3.1rem,15vw,5.4rem);line-height:.86;letter-spacing:.01em;margin:0 0 18px;max-width:9ch}
+.tapa .bajada{font-size:1.06rem;color:var(--tinta-2);margin:0 0 22px;max-width:36ch}
+.tapa .uso{font-size:.95rem;line-height:1.55;color:var(--tinta-2);
+  border-left:3px solid var(--miel);padding:2px 0 2px 14px;margin:0 0 22px;max-width:40ch}
+.tapa .uso strong{color:var(--tinta);font-weight:600}
+.objeto{background:var(--sup);padding:18px 18px 16px;border-radius:3px;margin-bottom:6px}
+.objeto h2{font-size:1.05rem;font-weight:600;margin:0 0 8px}
+.objeto p{font-size:.95rem;line-height:1.55;margin:0 0 10px;color:var(--tinta-2)}
+.objeto p:last-child{margin-bottom:0}
+.objeto strong{color:var(--tinta);font-weight:600}
+
+.cuat{padding:30px 0 4px;border-top:1px solid var(--borde);margin-top:34px}
+.cuat-cab{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.cuat-n{font-family:"Bebas Neue",Impact,sans-serif;font-size:2.1rem;line-height:1;color:var(--acento)}
+.cuat-t{font-size:1.02rem;font-weight:600;line-height:1.3}
+.cuat-sub{font-size:.9rem;color:var(--tinta-2);margin:0 0 18px}
+
+.panal{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;align-items:start}
+.panal > *:nth-child(2n){margin-top:26px}
+.hex{position:relative;width:100%;aspect-ratio:1 / 1.1547;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background:var(--sup);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:8px 4px;gap:1px;transition:background .18s ease,transform .18s ease}
+.hex:active{transform:scale(.97)}
+.hex .vb{font-family:"Bebas Neue",Impact,sans-serif;line-height:.95;letter-spacing:.02em;
+  font-size:clamp(.95rem,4.4vw,1.45rem)}
+.hex .pr{font-size:clamp(.58rem,2.4vw,.7rem);color:var(--tinta-2);font-style:italic;line-height:1.2;max-width:92%}
+.hex[data-leido="1"]{background:var(--miel);color:#141414}
+.hex[data-leido="1"] .pr{color:#3A2C05}
+.hex.extra{background:transparent}
+.hex.extra::before{content:"";position:absolute;inset:0;background:var(--borde);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%,50% 2.4%,2% 26.2%,2% 73.8%,50% 97.6%,98% 73.8%,98% 26.2%)}
+.extra-fila{display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;margin-top:6px}
+.extra-nota{font-size:.9rem;color:var(--tinta-2);line-height:1.45;margin:0}
+.pie{margin:46px 0 40px;padding-top:18px;border-top:1px solid var(--borde);font-size:.86rem;color:var(--tinta-2);line-height:1.5}
+
+#lectura{display:none}
+body.leyendo #portada{display:none}
+body.leyendo #lectura{display:block}
+.barra{position:fixed;top:0;left:0;right:0;z-index:20;background:var(--bg);
+  border-bottom:1px solid var(--borde);padding-top:env(safe-area-inset-top,0px)}
+.barra-in{max-width:38rem;margin:0 auto;padding:0 12px;height:52px;display:flex;align-items:center;gap:8px}
+.volver{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 4px;font-size:.95rem;font-weight:500}
+.volver svg{width:16px;height:16px;flex:none}
+.barra-vb{font-family:"Bebas Neue",Impact,sans-serif;font-size:1.3rem;letter-spacing:.02em;margin-left:auto;opacity:0;transition:opacity .2s}
+.barra.compacta .barra-vb{opacity:1}
+.tam{display:flex;gap:2px;margin-left:8px}
+.tam button{width:32px;height:32px;border:1px solid var(--borde);border-radius:2px;line-height:1;font-weight:600}
+.tam button:first-child{font-size:.8rem}
+.tam button:last-child{font-size:1.05rem}
+.progreso{position:absolute;left:0;bottom:-1px;height:2px;background:var(--miel);width:0}
+
+.lect{max-width:38rem;margin:0 auto;padding:calc(72px + env(safe-area-inset-top,0px)) 20px 0}
+.ficha{padding-bottom:22px;border-bottom:2px solid var(--tinta)}
+.ficha .ref{font-size:.85rem;color:var(--tinta-2);margin:0 0 6px}
+.ficha h2{font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;
+  font-size:clamp(3.2rem,16vw,5.6rem);line-height:.84;margin:0 0 10px;letter-spacing:.01em}
+.ficha .def{font-size:1.12rem;line-height:1.45;font-weight:500;margin:0 0 12px;max-width:34ch}
+.ficha .pr{font-size:.92rem;color:var(--tinta-2);margin:0}
+.ficha .pr b{font-weight:600;color:var(--tinta)}
+
+.bloque{padding:30px 0;border-bottom:1px solid var(--borde)}
+.bloque:last-of-type{border-bottom:none}
+.bloque h3{font-size:1.24rem;line-height:1.25;font-weight:600;margin:0 0 12px;letter-spacing:-.005em}
+.bloque p{margin:0 0 14px;max-width:64ch}
+.bloque p:last-child{margin-bottom:0}
+.bloque strong{font-weight:600}
+.fuente{margin-top:18px;border-left:3px solid var(--miel);padding:2px 0 2px 13px;
+  font-size:.88rem;line-height:1.5;color:var(--tinta-2);max-width:56ch}
+.fuente b{display:block;font-weight:600;color:var(--tinta);font-size:.84rem;margin-bottom:2px}
+
+.fin{padding:26px 0 8px;border-top:2px solid var(--tinta);margin-top:8px}
+.fin .marca{display:flex;align-items:center;gap:9px;font-size:.92rem;color:var(--tinta-2);margin-bottom:20px}
+.fin .marca .punto{width:10px;height:10px;background:var(--miel);border-radius:50%;flex:none}
+.sig{display:flex;flex-direction:column;gap:9px;padding-bottom:52px}
+.sig button{text-align:left;border:1px solid var(--borde);padding:13px 15px;border-radius:3px;
+  display:flex;align-items:baseline;gap:9px}
+.sig .et{font-size:.8rem;color:var(--tinta-2);flex:none}
+.sig .nm{font-family:"Bebas Neue",Impact,sans-serif;font-size:1.35rem;letter-spacing:.02em}
+
+@media (min-width:620px){.panal{gap:14px}.tapa{padding:64px 0 16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+.entra{animation:sube .32s ease both}
+@keyframes sube{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media print{
+  :root{--bg:#fff;--tinta:#000;--tinta-2:#444;--sup:#fff;--borde:#999;--miel:#000;--acento:#000}
+  .barra,.sig,.tam,.fin .marca{display:none !important}
+  .lect{padding-top:0;max-width:none}
+  .bloque{page-break-inside:avoid}
+  body{font-size:11pt}
+}
+</style>
+</head>
+<body>
+
+<main id="portada">
+  <div class="wrap">
+    <header class="tapa">
+      <h1>Seis maneras de mirar lo mismo</h1>
+      <p class="bajada">Seis operaciones de una misma investigación, de marzo a la defensa.</p>
+      <p class="uso"><strong>Acá solo hay texto.</strong> Ninguna lectura pide nada: ni responder, ni marcar, ni entregar. Cada una se abre cuando esa parte del trabajo ya empezó.</p>
+      <div class="objeto">
+        <h2>Lo mismo, esta vez, es tu proyecto</h2>
+        <p>Los seis hexágonos no son seis temas. Son <strong>seis operaciones sobre una sola investigación</strong>: la que vas a hacer este año, con una pregunta tuya y material que vas a producir vos.</p>
+        <p>El programa de la materia lo organiza en tres módulos —qué significa investigar, cómo se elabora un proyecto, el trabajo de campo— y un taller que arranca a mitad de año y no se cierra hasta el final. Estas seis lecturas siguen ese recorrido.</p>
+      </div>
+    </header>
+    <div id="cuats"></div>
+    <p class="pie">Cada bloque termina con la referencia exacta de dónde sale lo que dice: obra y año, o la sección del Diseño Curricular. Las resoluciones van con su número y su organismo.</p>
+  </div>
+</main>
+
+<div id="lectura">
+  <div class="barra" id="barra">
+    <div class="barra-in">
+      <button class="volver" id="volver">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        Panal
+      </button>
+      <div class="tam" role="group" aria-label="Tamaño del texto">
+        <button id="menos" aria-label="Achicar el texto">A</button>
+        <button id="mas" aria-label="Agrandar el texto">A</button>
+      </div>
+      <span class="barra-vb" id="barraVb"></span>
+    </div>
+    <div class="progreso" id="progreso"></div>
+  </div>
+  <article class="lect" id="lect"></article>
+</div>
+
+<script>
+const DATA = [
+{
+  id:"romper", cuat:1, verbo:"Romper", producto:"la lista",
+  definicion:"Escribir lo que ya creés sobre tu tema y ponerlo en duda antes de investigar nada.",
+  bloques:[
+    {
+      t:"Las certezas que traés puestas",
+      h:`<p>El programa de esta materia arranca con una pregunta que parece obvia —qué significa investigar— y contesta por un lado inesperado: por el sentido común. El diseño lo nombra con una expresión que conviene recordar, <em>las tramposas certezas del sentido común</em>.</p>
+      <p>Sobre casi cualquier tema social ya tenés una explicación armada antes de mirar un solo dato. Llegó por la casa, por la escuela, por lo que circula. Funciona bien para vivir y estorba para investigar, porque entrega una respuesta antes de que alguien haya hecho la pregunta.</p>
+      <p>La primera operación del año consiste en escribirlas. Una lista fechada de lo que ya creés sobre tu tema, guardada antes de leer nada.</p>`,
+      f:"Diseño Curricular para la Educación Secundaria, 6º año, Orientación Ciencias Sociales, DGCyE (2012), materia Proyectos de Investigación en Ciencias Sociales, módulo 1."
+    },
+    {
+      t:"La ruptura como operación técnica",
+      h:`<p>En 1968, Pierre Bourdieu, Jean-Claude Chamboredon y Jean-Claude Passeron publicaron <em>El oficio de sociólogo</em>, un libro sobre cómo se construye un objeto de investigación. Su primer movimiento se llama <strong>ruptura</strong>.</p>
+      <p>El argumento: el conocimiento común sobre lo social funciona como obstáculo, porque provee explicaciones listas que ahorran el trabajo de buscar otras. Y el lenguaje viene cargado: palabras como «vago», «cultura», «familia» o «juventud» traen adentro una teoría que nadie eligió.</p>
+      <p>La ruptura se hace más de una vez. Vuelve cuando elegís las preguntas del cuestionario, cuando nombrás una categoría, cuando escribís la conclusión. Cada una de esas decisiones puede meter de vuelta la explicación que ya tenías.</p>`,
+      f:"P. Bourdieu, J.-C. Chamboredon y J.-C. Passeron, <em>El oficio de sociólogo</em> (1968), primera parte."
+    },
+    {
+      t:"Desnaturalizar: preguntar desde cuándo",
+      h:`<p>La manera más rápida de romper con algo que parece natural es preguntarle la fecha.</p>
+      <p>El aula con bancos mirando al frente, el pizarrón, el timbre que corta la hora, la nota numérica, el cuaderno de comunicaciones: todo eso fue inventado, y hay un momento en que no existía. Pablo Pineau, Inés Dussel y Marcelo Caruso reconstruyeron esa invención para el caso argentino.</p>
+      <p>Lo que la pregunta produce: si algo tiene fecha de origen, alguien lo decidió, por alguna razón, y podría haber sido de otra manera. Eso convierte un paisaje en un objeto.</p>`,
+      f:"P. Pineau, I. Dussel y M. Caruso, <em>La escuela como máquina de educar</em> (2001). I. Dussel y M. Caruso, <em>La invención del aula</em> (1999)."
+    },
+    {
+      t:"Tu propio caso, que es el más difícil",
+      h:`<p>Investigar la escuela donde estudiás o el barrio donde vivís tiene una ventaja obvia y una trampa menos obvia.</p>
+      <p>La ventaja: conocés el terreno, sabés a quién preguntarle, entrás sin que nadie te frene.</p>
+      <p>La trampa: conocerlo demasiado hace que la mitad de las cosas no se vean, porque forman parte del paisaje. Nadie describe lo que mira todos los días.</p>
+      <p>Rosana Guber trabajó ese problema para la antropología hecha en la propia sociedad y propuso una salida de oficio: describir como si le estuvieras contando a alguien que nunca estuvo acá. Todo lo que te da vergüenza aclarar por obvio es, casi siempre, lo que hay que escribir.</p>`,
+      f:"R. Guber, <em>El salvaje metropolitano</em> (1991)."
+    },
+    {
+      t:"Confusión frecuente",
+      h:`<p>Romper con el sentido común no significa que la gente se equivoque y el investigador tenga razón.</p>
+      <p>Lo que las personas piensan sobre su propia vida forma parte del objeto de estudio, y el programa de la materia lo nombra como contenido con un término técnico: la perspectiva del actor. La ruptura se hace con las explicaciones que vos traías, no con las que te dan los entrevistados.</p>`,
+      f:"Diseño Curricular, módulo 3: la perspectiva del actor."
+    },
+    {
+      t:"El límite",
+      h:`<p>La lista de certezas se escribe en marzo y se relee en noviembre. La comparación entre las dos versiones es el indicador más directo de si el año hizo algo.</p>
+      <p>Y hay una parte que no se rompe: las preguntas que ni se te ocurrieron. Eso lo ve alguien de afuera, y por eso el material se discute en el taller.</p>`,
+      f:""
+    }
+  ]
+},
+{
+  id:"recortar", cuat:1, verbo:"Recortar", producto:"la pregunta",
+  definicion:"Pasar de un tema que te interesa a una pregunta que se puede contestar con evidencia.",
+  bloques:[
+    {
+      t:"Tema y problema",
+      h:`<p>Un <strong>tema</strong> es un territorio: las redes, el trabajo, la violencia, el consumo. Un <strong>problema</strong> es una pregunta que alguien puede contestar con evidencia que se junte en el tiempo que hay.</p>
+      <p>El programa de la materia nombra ese pasaje como contenido propio, «del tema al problema de investigación», y le dedica buena parte del segundo módulo. Hay una razón: es el lugar donde se traba la mayoría de los proyectos.</p>
+      <p>La diferencia práctica se nota al final. Un tema no se termina nunca. Una pregunta se contesta, o se muestra con precisión por qué no se pudo, que también es un resultado.</p>`,
+      f:"Diseño Curricular, módulo 2: del tema al problema de investigación."
+    },
+    {
+      t:"Las cuatro condiciones de una pregunta investigable",
+      h:`<p><strong>Se puede contestar con datos.</strong> Datos que ya existan, o que puedas producir vos con entrevistas, observación, encuesta o documentos.</p>
+      <p><strong>Tiene tamaño.</strong> Un curso, una cuadra, veinte publicaciones, cinco entrevistas, dos censos. Un universo que se pueda nombrar con números.</p>
+      <p><strong>No trae la respuesta adentro.</strong> «¿Por qué las redes dañan a los adolescentes?» ya contestó antes de empezar. La versión investigable deja el resultado abierto.</p>
+      <p><strong>Entra en el año.</strong> Con dieciséis semanas por cuatrimestre y el campo abierto sobre el final del primero, el tiempo real de trabajo es más corto de lo que parece en marzo.</p>
+      <p>La tercera condición es la que más cuesta, porque la pregunta con veredicto incorporado suele ser la que más ganas dan de investigar.</p>`,
+      f:""
+    },
+    {
+      t:"Cuatro preguntas que ordenan el proyecto",
+      h:`<p>El segundo módulo del programa organiza el diseño de la investigación alrededor de cuatro preguntas: qué, por qué, para qué y cómo.</p>
+      <p><strong>Qué</strong> es el problema y los objetivos. <strong>Por qué</strong> es la justificación: qué hace que valga la pena averiguarlo. <strong>Para qué</strong> es a dónde va a parar lo que encuentres. <strong>Cómo</strong> son las estrategias, que el diseño divide en intensivas —observación participante, entrevistas, historias de vida— y extensivas, como la encuesta.</p>
+      <p>Y hay un quinto elemento que el programa nombra aparte: los referentes conceptuales y empíricos. Los conceptos con los que vas a mirar, y los casos o datos sobre los que vas a mirar.</p>`,
+      f:"Diseño Curricular, módulo 2: diseño de la investigación; estrategias intensivas y extensivas."
+    },
+    {
+      t:"El tamaño: lo que aprendieron otros sistemas",
+      h:`<p>Tres sistemas que evalúan trabajos de investigación de último año ponen techo, y los tres lo ponen bajo.</p>
+      <p>El <strong>Extended Essay</strong> del Bachillerato Internacional fija un máximo de 4.000 palabras y calcula unas 40 horas de trabajo. La <strong>Extended Project Qualification</strong> británica pide alrededor de 5.000 palabras o un artefacto equivalente. El <strong>Treball de Recerca</strong> catalán calcula unas 70 horas y recomienda una memoria de hasta 50 páginas sin anexos.</p>
+      <p>Ninguno de los tres es corto por falta de ambición. El techo existe para forzar el recorte, que es la operación difícil. Escribir mucho sobre un tema grande sale más fácil que escribir poco sobre un problema preciso.</p>`,
+      f:"IB, <em>Extended Essay Guide</em>. AQA, especificación EPQ 7993. Generalitat de Catalunya, orientaciones del Treball de Recerca de Batxillerat."
+    },
+    {
+      t:"Confusión frecuente",
+      h:`<p>Una pregunta chica y una pregunta pobre son dos cosas distintas.</p>
+      <p>«¿Cómo se organiza la fila del comedor en esta escuela?» da más que «¿cómo funciona la desigualdad en la Argentina?», porque la primera se contesta con lo que hay a mano y la segunda termina en una copia de lo que ya leíste.</p>
+      <p>Los buenos trabajos de investigación escolares casi siempre tienen preguntas que de afuera parecen mínimas.</p>`,
+      f:""
+    },
+    {
+      t:"El límite",
+      h:`<p>Todo recorte deja cosas afuera, y lo que deja afuera es información sobre el recorte.</p>
+      <p>Por eso el informe final dedica un párrafo a decir qué queda sin explicar. Esa es la diferencia entre un trabajo que se presenta y un trabajo que se defiende: el segundo sabe dónde está su borde.</p>`,
+      f:""
+    }
+  ]
+},
+{
+  id:"buscar", cuat:1, verbo:"Buscar", producto:"el estado de la cuestión",
+  definicion:"Encontrar lo que ya se escribió sobre tu problema y ordenarlo como una discusión.",
+  bloques:[
+    {
+      t:"Alguien ya investigó algo parecido",
+      h:`<p>Casi cualquier pregunta que se te ocurra tiene antecedentes: tesis, artículos, informes, trabajos de cátedra. Ubicarlos sirve para tres cosas concretas.</p>
+      <p>Para no repetir un trabajo que ya está hecho. Para tomar prestadas categorías que otros probaron y ahorrarse inventarlas de cero. Y para saber con quién estás discutiendo, que es la única manera de que tu resultado signifique algo.</p>`,
+      f:""
+    },
+    {
+      t:"Dónde buscar sin pagar nada",
+      h:`<p><strong>Repositorios argentinos de acceso abierto.</strong> SEDICI, de la Universidad Nacional de La Plata. Memoria Académica, de la Facultad de Humanidades de la UNLP, fuerte en educación y ciencias sociales. CONICET Digital. RIDAA, de la Universidad Nacional de Quilmes. Y el Sistema Nacional de Repositorios Digitales, que busca en varios a la vez.</p>
+      <p><strong>Regionales.</strong> SciELO y Redalyc, con revistas de toda América Latina.</p>
+      <p><strong>Datos.</strong> El Censo 2022, procesable en línea con REDATAM hasta nivel de radio censal. La Encuesta Nacional de Uso del Tiempo 2021. La Encuesta Permanente de Hogares. La Encuesta Nacional de Consumos Culturales 2022. Y las bases de la Encuesta Nacional sobre la Estructura Social del PISAC, relevada entre 2014 y 2015, que se descargan previo formulario.</p>
+      <p>Todo eso está completo y es gratis. La biblioteca cerrada por suscripción existe, y no hace falta para este trabajo.</p>`,
+      f:"SEDICI (UNLP), Memoria Académica (FaHCE-UNLP), CONICET Digital, RIDAA (UNQ), Sistema Nacional de Repositorios Digitales, SciELO, Redalyc. INDEC: REDATAM, ENUT 2021, EPH. SINCA: ENCC 2022. PISAC-ENES: pisac.mincyt.gob.ar y datos.gob.ar."
+    },
+    {
+      t:"La revisión que no sirve",
+      h:`<p>El error más frecuente y el más fácil de detectar desde afuera: la revisión como lista de resúmenes. Fulano dijo esto, mengano dijo aquello, zutano agregó lo otro.</p>
+      <p>La versión que sirve agrupa por discusión. Quiénes contestan lo mismo y con qué evidencia. Quiénes discuten entre sí y en qué punto exacto se separan. Qué nadie contestó todavía.</p>
+      <p>Ese último hueco es donde entra tu pregunta, y encontrarlo es la mitad del trabajo del primer cuatrimestre.</p>`,
+      f:""
+    },
+    {
+      t:"Citar, y por qué",
+      h:`<p>Una sola norma de citación para todo el curso, elegida al principio y aplicada igual por todos. Cuál, importa menos que la constancia.</p>
+      <p>Zotero hace el trabajo pesado: guarda lo que encontrás, se queda con los datos del texto y arma la bibliografía sola en el formato que le pidas. Es libre y gratuito.</p>
+      <p>La razón de fondo para citar tiene poco que ver con el reglamento: una cita es la dirección exacta donde cualquiera puede ir a verificar si el texto dice lo que vos decís que dice. Sin eso, tu afirmación vale lo mismo que cualquier otra.</p>`,
+      f:""
+    },
+    {
+      t:"Confusión frecuente",
+      h:`<p>Un texto no vale por la cantidad de veces que aparece en un buscador, ni por lo seguro que suene.</p>
+      <p>La pregunta que se le hace a un dato —de dónde salió y quién lo produjo— vale igual para la bibliografía. Quién escribió esto, en qué año, con qué evidencia, financiado por quién.</p>`,
+      f:""
+    },
+    {
+      t:"El límite",
+      h:`<p>Lo que está en repositorios abiertos es una parte del total. Hay revistas cerradas, hay investigación que nunca se publicó y hay trabajos hechos en otros idiomas.</p>
+      <p>La respuesta honesta en el informe es decir hasta dónde buscaste, en qué repositorios y con qué palabras. Eso permite que otro retome desde ahí.</p>`,
+      f:""
+    }
+  ]
+},
+{
+  id:"entrar", cuat:2, verbo:"Entrar", producto:"el registro",
+  definicion:"Conseguir el acceso, estar ahí, y escribir lo que pasa día por día.",
+  bloques:[
+    {
+      t:"El acceso se negocia",
+      h:`<p>El tercer módulo del programa empieza por una palabra corta y decisiva: el <strong>acceso</strong>. Antes de cualquier técnica hay que conseguir permiso para estar donde vas a estar.</p>
+      <p>Eso implica identificar quién autoriza —la conducción de la escuela, el encargado del lugar, la persona a entrevistar—, explicar qué vas a hacer en términos que se entiendan, y aceptar que te digan que no.</p>
+      <p>El acceso además se mantiene. Se consigue una vez y se revalida cada vez que volvés, porque quien te dejó entrar puede arrepentirse y está en su derecho.</p>`,
+      f:"Diseño Curricular, módulo 3: el trabajo de campo desde el enfoque socioantropológico; el acceso."
+    },
+    {
+      t:"El lugar del investigador",
+      h:`<p>El programa nombra un contenido que suele quedar afuera de los manuales: <em>el lugar del investigador y la problemática de la intersubjetividad</em>.</p>
+      <p>Traducido: vos estás adentro de la escena y la modificás. Tu edad, tu ropa, cómo hablás, de qué escuela venís, con quién te vieron llegar: todo eso cambia lo que la gente te cuenta. No hay manera de sacarlo.</p>
+      <p>La salida no consiste en volverse invisible, cosa que no pasa. Consiste en anotar tu posición como parte del dato. Quién te presentó, cómo te recibieron, qué te dijeron cuando apagaste el grabador. Eso va al registro con la misma tinta que lo demás.</p>`,
+      f:"Diseño Curricular, módulo 3: el lugar del investigador y la problemática de la intersubjetividad."
+    },
+    {
+      t:"Un caso: el diario que no debía publicarse",
+      h:`<p>Bronisław Malinowski pasó años en las islas Trobriand durante la Primera Guerra Mundial y publicó en 1922 <em>Los argonautas del Pacífico occidental</em>, el libro que fijó el modelo del trabajo de campo prolongado: quedarse, aprender la lengua, participar.</p>
+      <p>En 1967, veintitrés años después de su muerte, su viuda publicó los diarios personales que había escrito en el campo. Ahí aparece otro Malinowski: aburrido, irritado con la gente que estudiaba, con prejuicios de su época escritos sin filtro, extrañando Europa.</p>
+      <p>La publicación cayó como una bomba en la antropología y abrió una discusión que sigue: cuánto de lo que el investigador siente y piensa tiene que entrar en el texto final. La respuesta mayoritaria hoy es que la posición del que escribe se declara, en lugar de esconderse detrás de una voz impersonal.</p>`,
+      f:"B. Malinowski, <em>Los argonautas del Pacífico occidental</em> (1922) y <em>A Diary in the Strict Sense of the Term</em> (edición póstuma, 1967)."
+    },
+    {
+      t:"Cómo se escribe un registro",
+      h:`<p>Fecha, hora de entrada y de salida, lugar, quiénes estaban. Después, el relato de lo que pasó en orden.</p>
+      <p>Dos columnas, o dos tipografías, o corchetes: como quieras, pero separado. Por un lado lo que pasó y lo que se dijo. Por el otro, lo que se te ocurrió mientras pasaba. Si están mezcladas, en noviembre el registro entero se vuelve tu opinión de aquel martes.</p>
+      <p>Y se escribe el mismo día. La memoria de campo dura pocas horas: al día siguiente quedan las conclusiones y se perdieron las frases textuales, que son lo que se cita.</p>
+      <p>El diseño le da a esto estatus de evaluación: los registros se entregan, el docente los devuelve con indicaciones precisas, y se rehacen.</p>`,
+      f:"Diseño Curricular, módulo 3: el registro de campo; orientaciones para la evaluación."
+    },
+    {
+      t:"Confusión frecuente",
+      h:`<p>Un registro largo no es mejor que uno corto. Un registro con frases textuales es mejor que uno con resúmenes.</p>
+      <p>«Estaban todos incómodos» no se puede citar ni discutir. «Nadie se sentó en las dos primeras filas hasta que llegó la profesora» sí, y además permite que otro vaya a ver si pasa siempre.</p>`,
+      f:""
+    },
+    {
+      t:"El límite",
+      h:`<p>El campo desordena el proyecto, y eso es normal. Aparece gente que no estaba prevista, la pregunta se corre, el lugar elegido resulta menos interesante que el de al lado.</p>
+      <p>El programa lo dice con todas las letras cuando describe el taller: los registros se presentan al grupo «evidenciando los avances y también los retrocesos». Un retroceso anotado vale más que un plan que se cumplió sobre el papel.</p>`,
+      f:"Diseño Curricular, taller de trabajo de campo."
+    }
+  ]
+},
+{
+  id:"analizar", cuat:2, verbo:"Analizar", producto:"las categorías",
+  definicion:"Convertir un montón de material en unas pocas categorías que expliquen algo.",
+  bloques:[
+    {
+      t:"Después del campo hay una pila",
+      h:`<p>Cuando termina el trabajo de campo tenés registros, desgrabaciones, fotos de documentos, planillas. Mucho material y ninguna respuesta.</p>
+      <p>El análisis consiste en leer todo eso varias veces y ponerle nombre a lo que se repite. Esos nombres son las <strong>categorías</strong>, y son el resultado del trabajo tanto como las conclusiones.</p>`,
+      f:"Diseño Curricular, módulo 3: análisis e interpretación."
+    },
+    {
+      t:"Las categorías salen del material",
+      h:`<p>Hay dos maneras de codificar. Bajar categorías desde la teoría y buscar dónde encajan. O leer el material sin categorías previas y dejar que aparezcan.</p>
+      <p>La tradición que el programa toma trabaja sobre todo del segundo modo. Barney Glaser y Anselm Strauss lo formularon en 1967: las categorías se construyen desde los datos, se comparan entre casos y se van afinando.</p>
+      <p>De ahí viene una idea práctica que se llama <strong>saturación</strong>: se sigue sumando material hasta que las entrevistas o los registros nuevos dejan de aportar categorías nuevas. Ahí se corta. El criterio no es un número redondo de entrevistas.</p>
+      <p>En una investigación escolar, con cinco o seis casos rara vez se satura de verdad. Decirlo en el informe es más honesto que fingir que sí.</p>`,
+      f:"B. Glaser y A. Strauss, <em>The Discovery of Grounded Theory</em> (1967)."
+    },
+    {
+      t:"Triangular",
+      h:`<p>El programa nombra la <strong>triangulación de datos</strong> como contenido propio, y es la defensa más barata contra equivocarse.</p>
+      <p>Consiste en mirar lo mismo desde tres lados. Lo que la gente dice en la entrevista. Lo que se ve en la observación. Lo que figura en los documentos o en las estadísticas.</p>
+      <p>Cuando los tres coinciden, la afirmación se apoya sola. Cuando no coinciden, ahí está lo interesante: la diferencia entre lo que se dice y lo que se hace es un hallazgo, siempre que se muestre con las tres fuentes en la mano.</p>`,
+      f:"Diseño Curricular, módulo 3: triangulación de datos."
+    },
+    {
+      t:"Con qué se codifica",
+      h:`<p>Con papel, resaltadores y tijera funciona, y así se hizo durante décadas.</p>
+      <p>Si preferís pantalla, hay dos programas libres y gratuitos. <strong>Taguette</strong> es el más liviano: corre en el navegador o instalado, importa PDF, Word, texto plano, HTML y epub, permite etiquetar fragmentos y exporta el libro de códigos con todas las citas de cada etiqueta. <strong>QualCoder</strong> pide un poco más de máquina y a cambio codifica también imagen, audio y video, con categorías en árbol.</p>
+      <p>Ninguno de los dos analiza por vos. Los dos hacen lo mismo que la tijera, más rápido y sin perder de dónde salió cada recorte.</p>`,
+      f:"Taguette (taguette.org) y QualCoder, ambos de código abierto y descarga libre."
+    },
+    {
+      t:"Confusión frecuente",
+      h:`<p>Contar cuántas veces apareció algo no es analizar.</p>
+      <p>«La palabra respeto apareció catorce veces» describe el corpus. Analizar es preguntar qué hace esa palabra: quién la usa, para hablar de quién, en qué momento de la conversación aparece y a quién se la niegan.</p>
+      <p>El número sirve de entrada. La categoría explica.</p>`,
+      f:""
+    },
+    {
+      t:"El límite",
+      h:`<p>Cinco entrevistas y tres observaciones no habilitan a hablar de los jóvenes, de la escuela argentina ni de la sociedad actual.</p>
+      <p>Habilitan a hablar de ese caso, con esa gente, en esas fechas, y a señalar con qué otras investigaciones coincide o discute. Eso es mucho: es exactamente lo que hace la investigación social publicada, a otra escala.</p>`,
+      f:""
+    }
+  ]
+},
+{
+  id:"defender", cuat:2, verbo:"Defender", producto:"el informe",
+  definicion:"Escribir el informe y bancarlo frente a gente que va a hacer preguntas.",
+  bloques:[
+    {
+      t:"El informe, no la monografía",
+      h:`<p>El producto que pide el programa tiene nombre propio: un <strong>informe de investigación</strong> que dé cuenta de los alcances logrados.</p>
+      <p>La diferencia con la monografía escolar de siempre está en el orden. La monografía expone un tema. El informe contesta una pregunta y muestra el camino: qué se preguntó, por qué, cómo se buscó, qué se encontró, qué quedó sin contestar.</p>
+      <p>Esa última parte es obligatoria. Un informe sin límites declarados se lee como propaganda.</p>`,
+      f:"Diseño Curricular, módulo 3: el producto, informe de investigación; orientaciones para la evaluación."
+    },
+    {
+      t:"Las tres piezas de la Feria",
+      h:`<p>Las Ferias de Educación, Artes, Ciencias y Tecnología funcionan en la Argentina con instancias escolar, distrital, regional y provincial, y piden tres piezas por trabajo.</p>
+      <p>La <strong>carpeta de campo</strong>, donde está el material crudo: registros, desgrabaciones, planillas, con sus fechas. El <strong>informe de trabajo</strong>, que es el texto terminado. Y el <strong>registro pedagógico</strong>, donde el docente cuenta cómo se hizo.</p>
+      <p>El resumen que acompaña tiene tope de 500 palabras. Escribir esas 500 palabras es una prueba: si no entra ahí, el recorte todavía no está hecho.</p>
+      <p>La pieza que más se parece a lo que pide esta materia es la carpeta de campo, porque guarda el material tal como salió.</p>`,
+      f:"Programa Nacional de Ferias de Ciencias y Tecnología. Para la provincia: «Orientaciones para la participación en Ferias», DGCyE (2025)."
+    },
+    {
+      t:"La defensa oral",
+      h:`<p>Tres sistemas de último año terminan con alguien haciendo preguntas en voz alta.</p>
+      <p>El Bachillerato Internacional cierra el Extended Essay con una entrevista final entre el estudiante y su supervisor. La EPQ británica exige una presentación con preguntas del público, y vale el 20 % de la nota. El Treball de Recerca catalán se defiende ante un tribunal, con exposición de quince a veinte minutos y preguntas después.</p>
+      <p>Las preguntas son parecidas en los tres casos y conviene saberlas de antemano: por qué elegiste esto, qué harías distinto, cuál fue el momento en que cambiaste de idea, qué parte no pudiste resolver.</p>
+      <p>Ninguna se contesta bien de memoria. Se contestan con el proyecto adentro.</p>`,
+      f:"IB, <em>Extended Essay Guide</em> (viva voce). AQA, EPQ 7993, objetivo AO4. Generalitat de Catalunya, defensa del Treball de Recerca."
+    },
+    {
+      t:"Escribir es parte del método",
+      h:`<p>El programa le pide al taller que fomente la escritura, y la llama «práctica central en un proceso de investigación».</p>
+      <p>La razón es técnica. Al escribir aparecen los huecos del argumento: la afirmación sin dato atrás, el salto entre dos párrafos, la conclusión que no se sigue de lo anterior. Con el trabajo todavía en la cabeza, todo cierra.</p>
+      <p>De ahí la regla práctica: escribir desde el primer cuatrimestre, en borradores cortos que se corrigen, en lugar de guardar la escritura para el final.</p>`,
+      f:"Diseño Curricular, taller de trabajo de campo."
+    },
+    {
+      t:"Confusión frecuente",
+      h:`<p>Un resultado que contradice lo que esperabas no es un trabajo fallido. Es el mejor resultado posible, porque es el único que no podrías haber escrito en marzo.</p>
+      <p>El trabajo fallido de verdad es el que termina confirmando exactamente la lista de certezas del primer día, sin que en el medio haya pasado nada.</p>`,
+      f:""
+    },
+    {
+      t:"El límite",
+      h:`<p>El informe se termina porque se acaba el año, no porque la investigación esté cerrada.</p>
+      <p>La última sección dice qué seguiría: qué pregunta quedó abierta, qué le faltó al material, qué haría alguien que retomara desde acá. Eso convierte un trabajo escolar en algo que otro puede continuar.</p>`,
+      f:""
+    }
+  ]
+},
+{
+  id:"autoria", cuat:3, verbo:"Autoría", producto:"la bitácora",
+  definicion:"Cómo se demuestra que un trabajo es tuyo, y las reglas que valen para las seis operaciones.",
+  bloques:[
+    {
+      t:"Por qué hay un séptimo hexágono",
+      h:`<p>Las seis operaciones anteriores producen un texto largo, hecho a lo largo de un año, que después se entrega con tu nombre. Dos cuestiones atraviesan las seis y no pertenecen a ninguna: qué se pide antes de tocar a alguien, y cómo se demuestra que lo que entregaste lo hiciste vos.</p>`,
+      f:""
+    },
+    {
+      t:"Los permisos",
+      h:`<p><strong>Salidas y trabajo de campo.</strong> Cualquier actividad fuera del establecimiento se encuadra en la Resolución 3871/24 de la DGCyE, que fija los requisitos de las salidas educativas para gestión estatal y privada y exige autorización previa de las familias; para salidas cercanas y regulares alcanza una autorización anual.</p>
+      <p><strong>Entrevistas.</strong> Consentimiento informado de quien va a ser entrevistado, explicado en términos que entienda, y revocable en cualquier momento. Si es menor de edad, consentimiento de la familia más el acuerdo del propio entrevistado. El marco de referencia para ciencias sociales es la Resolución 2857/06 del CONICET.</p>
+      <p><strong>Datos.</strong> La Ley 25.326 deja fuera de su alcance a las encuestas y estadísticas cuando los datos no pueden atribuirse a una persona determinada o determinable, y exige una técnica de disociación cuando el anonimato no se puede garantizar. En la práctica: nombres cambiados, nada que permita reconstruir quién es quién, y el material se destruye al cerrar el año.</p>
+      <p><strong>Lo que no se pregunta.</strong> Salud, ingresos exactos, situación migratoria, antecedentes. La ley los llama datos sensibles; acá la regla es más corta.</p>`,
+      f:"DGCyE, Resolución 3871/24 (salidas educativas). CONICET, Resolución 2857/06. Ley 25.326, arts. 5, 6, 7 y 28, y decreto reglamentario 1558/01. Ley 26.061."
+    },
+    {
+      t:"La bitácora",
+      h:`<p>Los tres sistemas internacionales de trabajo final piden lo mismo con distinto nombre. El IB pide tres reflexiones fechadas en un formulario. La EPQ pide un <em>production log</em> que documenta todo el proceso y pesa en la nota. Cataluña recomienda un diario de investigación.</p>
+      <p>Una bitácora es una hoja por semana con cuatro líneas: qué hice, qué encontré, qué se me complicó, qué sigue. Fechada.</p>
+      <p>Sirve para dos cosas. Para escribir el informe sin depender de la memoria de marzo. Y para demostrar autoría, que es el punto siguiente.</p>`,
+      f:"IB, Reflections on Planning and Progress Form. AQA, EPQ 7993, production log."
+    },
+    {
+      t:"Inteligencia artificial: declarar, no esconder",
+      h:`<p>El Bachillerato Internacional no prohíbe usar IA. Exige declararla: el texto generado va entre comillas, con el prompt exacto y la fecha, y aparece en la bibliografía. Lo que constituye falta es generar párrafos, argumentos o análisis y presentarlos como propios.</p>
+      <p>Ese es el criterio que conviene acá, con un agregado que viene de la materia. El material de esta investigación —los registros, las desgrabaciones, las planillas— existe en un solo lugar y no está en internet. Un modelo puede escribir un texto correcto sobre la escuela argentina; no puede haber estado el martes a las 10:05 en el pasillo, ni haber escuchado a la persona que aceptó que la entrevistaran.</p>
+      <p>Por eso el campo no se delega. Buscar antecedentes, ordenar la bibliografía, revisar la redacción: eso se discute, y se declara.</p>`,
+      f:"IB, política de integridad académica (marzo de 2025). Contenidos de IA obligatorios por Resoluciones CFE 495/25 y 496/25; DGCyE, «Inteligencia Artificial Generativa en la educación» (2026)."
+    },
+    {
+      t:"Por qué acá no se usan detectores",
+      h:`<p>Los programas que dicen detectar texto generado por IA se equivocan, y se equivocan de manera desigual.</p>
+      <p>En 2023, un equipo de Stanford publicó en la revista <em>Patterns</em> una prueba con siete detectores sobre ensayos escritos por personas. Los textos de escritores no nativos de inglés fueron marcados como generados por IA en un <strong>61,3 %</strong> de los casos en promedio; los de estudiantes estadounidenses, en alrededor del 5 %. Casi el 20 % de los ensayos de no nativos fue marcado por los siete detectores a la vez.</p>
+      <p>El sesgo va contra quien escribe con vocabulario más simple y frases más previsibles. Aplicado a un aula del conurbano, un detector castigaría antes a quien tuvo menos acceso a la escritura escolar.</p>
+      <p>La demostración de autoría, acá, es otra: bitácora fechada, entregas parciales, material de campo propio y defensa oral. Cuatro cosas que un detector no necesita.</p>`,
+      f:"W. Liang, M. Yuksekgonul, Y. Mao, E. Wu y J. Zou, «GPT detectors are biased against non-native English writers», <em>Patterns</em> 4(7):100779 (2023)."
+    }
+  ]
+}
+];
+
+
+var CUATS = [
+  {n:"1", t:"Construir el problema", s:"Primer cuatrimestre, dieciséis semanas"},
+  {n:"2", t:"El campo y el informe", s:"Segundo cuatrimestre, dieciséis semanas"}
+];
+
+var leidos = {}, esc = 1;
+try{
+  var g = localStorage.getItem("panal6.leidos"); if(g) leidos = JSON.parse(g);
+  var e = localStorage.getItem("panal6.esc"); if(e) esc = parseFloat(e) || 1;
+}catch(err){ leidos = {}; esc = 1; }
+document.documentElement.style.setProperty("--esc", esc);
+
+function guardar(){
+  try{
+    localStorage.setItem("panal6.leidos", JSON.stringify(leidos));
+    localStorage.setItem("panal6.esc", String(esc));
+  }catch(err){}
+}
+
+function hex(a, cls){
+  return '<button class="hex'+(cls?' '+cls:'')+'" data-id="'+a.id+'" data-leido="'+(leidos[a.id]?1:0)+'">'+
+    '<span class="vb">'+a.verbo+'</span><span class="pr">'+a.producto+'</span></button>';
+}
+
+function pintarPortada(){
+  var h = "";
+  CUATS.forEach(function(c, i){
+    var pasos = DATA.filter(function(a){ return a.cuat === i+1; });
+    h += '<section class="cuat">'+
+      '<div class="cuat-cab"><span class="cuat-n">'+c.n+'</span><span class="cuat-t">'+c.t+'</span></div>'+
+      '<p class="cuat-sub">'+c.s+'</p>'+
+      '<div class="panal">'+ pasos.map(function(a){ return hex(a); }).join("") +'</div>'+
+      '</section>';
+  });
+  var extra = DATA.filter(function(a){ return a.cuat === 3; });
+  if(extra.length){
+    h += '<section class="cuat">'+
+      '<div class="cuat-cab"><span class="cuat-n">+</span><span class="cuat-t">Lo que vale para las seis</span></div>'+
+      '<p class="cuat-sub">Se lee antes de la primera salida</p>'+
+      '<div class="extra-fila">'+
+        extra.map(function(a){ return hex(a,"extra"); }).join("")+
+        '<p class="extra-nota">Permisos, manejo del material y cómo se demuestra que el trabajo es tuyo.</p>'+
+      '</div></section>';
+  }
+  document.getElementById("cuats").innerHTML = h;
+}
+
+function pintarLectura(id){
+  var a = null, idx = -1;
+  DATA.forEach(function(x,i){ if(x.id===id){ a=x; idx=i; } });
+  if(!a) return volverAlPanal();
+
+  var ref = a.cuat <= 2 ? "Cuatrimestre "+a.cuat : "Transversal a los dos cuatrimestres";
+  var h = '<header class="ficha">'+
+    '<p class="ref">'+ref+'</p>'+
+    '<h2>'+a.verbo+'</h2>'+
+    '<p class="def">'+a.definicion+'</p>'+
+    '<p class="pr">Deja <b>'+a.producto+'</b>.</p>'+
+    '</header>';
+
+  a.bloques.forEach(function(b){
+    h += '<section class="bloque"><h3>'+b.t+'</h3>'+b.h;
+    if(b.f) h += '<div class="fuente"><b>De dónde sale</b>'+b.f+'</div>';
+    h += '</section>';
+  });
+
+  h += '<div class="fin" id="fin">'+
+    '<p class="marca"><span class="punto"></span>Llegaste al final de '+a.verbo.toLowerCase()+'.</p><div class="sig">';
+  var sig = DATA[idx+1];
+  if(sig) h += '<button data-ir="'+sig.id+'"><span class="et">Sigue</span><span class="nm">'+sig.verbo+'</span></button>';
+  h += '<button data-ir="__panal"><span class="et">Volver</span><span class="nm">El panal</span></button></div></div>';
+
+  var cont = document.getElementById("lect");
+  cont.innerHTML = h;
+  cont.classList.remove("entra"); void cont.offsetWidth; cont.classList.add("entra");
+  document.getElementById("barraVb").textContent = a.verbo;
+  document.body.classList.add("leyendo");
+  window.scrollTo(0,0);
+  observarFin(a.id);
+}
+
+var obs = null;
+function observarFin(id){
+  if(obs) obs.disconnect();
+  var fin = document.getElementById("fin");
+  if(!fin || !("IntersectionObserver" in window)) return;
+  obs = new IntersectionObserver(function(ents){
+    ents.forEach(function(en){ if(en.isIntersecting){ leidos[id] = 1; guardar(); } });
+  }, {threshold:0.4});
+  obs.observe(fin);
+}
+
+function volverAlPanal(){
+  document.body.classList.remove("leyendo");
+  if(obs) obs.disconnect();
+  if(location.hash) history.replaceState(null,"",location.pathname+location.search);
+  pintarPortada();
+  window.scrollTo(0,0);
+}
+
+document.addEventListener("click", function(ev){
+  var h = ev.target.closest("[data-id]");
+  if(h){ location.hash = h.getAttribute("data-id"); return; }
+  var ir = ev.target.closest("[data-ir]");
+  if(ir){
+    var d = ir.getAttribute("data-ir");
+    if(d === "__panal") volverAlPanal(); else location.hash = d;
+    return;
+  }
+  if(ev.target.closest("#volver")) volverAlPanal();
+});
+
+function cambiarEsc(d){
+  esc = Math.min(1.34, Math.max(0.88, Math.round((esc + d)*100)/100));
+  document.documentElement.style.setProperty("--esc", esc);
+  guardar();
+}
+document.getElementById("mas").addEventListener("click", function(){ cambiarEsc(0.08); });
+document.getElementById("menos").addEventListener("click", function(){ cambiarEsc(-0.08); });
+
+var barra = document.getElementById("barra"), prog = document.getElementById("progreso");
+window.addEventListener("scroll", function(){
+  if(!document.body.classList.contains("leyendo")) return;
+  barra.classList.toggle("compacta", window.scrollY > 140);
+  var alto = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = (alto > 0 ? Math.min(100, (window.scrollY/alto)*100) : 0) + "%";
+}, {passive:true});
+
+function porHash(){
+  var id = location.hash.replace("#","");
+  if(id && DATA.some(function(a){ return a.id === id; })) pintarLectura(id);
+  else volverAlPanal();
+}
+window.addEventListener("hashchange", porHash);
+pintarPortada();
+porHash();
+</script>
+</body>
+</html>
